@@ -1,0 +1,73 @@
+---
+title: "Math & Stats Project"
+output: html_notebook
+---
+
+ 
+Reading in Data Frame
+```{r}
+library(dplyr)
+library(readr)
+library(tidyverse)
+library(modelr)
+
+df<-read_csv("C:/Users/djrem/Desktop/FProject/SND.csv") %>% na.omit()
+```
+
+Quantity and Demand Functions
+```{r}
+q.lm<-lm(`Qvd`~PI+GP+ATP+SIP+RP,data=df)
+summary(q.lm)
+
+p.lm <-lm(`Pv`~PI+GP+ATP+SIP+RP,data=df)
+summary(p.lm)
+
+ggplot(df,aes(x=GP,y=Pv)) + geom_point() +geom_smooth(method="lm")
+
+df$phat <-p.lm$fitted.values
+```
+
+Supply and Demand Functions
+```{r}
+demand.lm <- lm(Qvd~phat+PI+GP+ATP,data=df)
+supply.lm <- lm(Qvd~phat+SIP+RP,data=df)
+summary(demand.lm)
+summary(supply.lm)
+anova(demand.lm)
+```
+
+
+Time Series of Demand and Time 
+```{r}
+df$Pv <-as.numeric(df$Pv)
+df$Qvd <-as.numeric(df$Qvd)
+df$Observtion<-as.Date(df$Observtion,"%m/%d/%Y")
+
+```
+
+```{r}
+ggplot(data=df,aes(x=Observtion,y=Pv)) + geom_point() + 
+  geom_smooth(color="red") +theme_minimal()
+
+ggplot(data=df,aes(x=Observtion,y=Qvd)) +geom_point() +
+  geom_smooth() +theme_minimal()
+
+step(supply.lm)
+```
+```{r fig.width=10 fig.height=10}
+library("GGally")
+lowerFn <- function(data, mapping, method = "lm",...) {
+  p <- ggplot(data = data, mapping = mapping) +
+    geom_point(colour = "blue") +
+    geom_smooth(method = method, color = "red",...)
+  p
+}x
+```
+
+```{r}
+library(vip)
+vip(demand.lm,aes = list(fill = "blue"))+theme_classic()
+```
+
+
+
