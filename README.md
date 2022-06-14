@@ -1,1 +1,2 @@
 # Market-Analysis-of-Supply-and-demand-of-Lightweight-vehicles
+Using market data on vehicle price and quantity sold from January 2014 to July 2021, we will estimate the market demand and supply of light-weight vehicles in the U.S as well as the market equilibrium price and quantity.Doing so will enable us to identify which exogenous factors, for example, the price of inputs for vehicle production, gas prices, or more, play a role in shifts of market supply and demand. The technique for estimating market supply and demand functions is a simultaneous equations model.
